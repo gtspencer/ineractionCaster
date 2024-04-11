@@ -85,7 +85,6 @@ app.frame('/response', async (c) => {
     }
   }
 
-
   let message = "🥺 Nope. Try bothering them more. 🥺"
   if (reacted) {
     message = "🥳 Yup!  You must be special! 🥳"
