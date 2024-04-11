@@ -17,6 +17,11 @@ const app = new Frog({
   hub: pinata()
 })
 
+const cinizFID = 7251
+const danFID = 3
+const jesseFID = 99
+const jacekFID = 15983
+
 app.frame('/', (c) => {
   return c.res({
     image: (
@@ -45,18 +50,19 @@ app.frame('/', (c) => {
             padding: '0 120px',
             whiteSpace: 'pre-wrap',
           }}
-        > Has @ciniz interacted with your posts?
+        > Has @______ interacted with your posts?
         </div>
       </div>
     ),
     intents: [
-        <Button value="ciniz">Check now</Button>,
+        <Button value="ciniz">↑ @ciniz</Button>,
+        <Button value="dan">🟣 @drw.eth</Button>,
+        <Button value="jesse">🔵 @jessepollak</Button>,
+        <Button value="jacek">🎩 @jacek</Button>,
     ],
     action: '/response'
   })
 })
-
-const cinizFID = 7251
 
 app.frame('/response', async (c) => {
   const { verified, frameData, buttonValue } = c
@@ -71,6 +77,24 @@ app.frame('/response', async (c) => {
     return ReturnUnverified(c, "Please login to farcaster")
   }
 
+  let influencerFid = cinizFID
+  let influencerName = "Ciniz"
+
+  switch (buttonValue) {
+    case "dan":
+      influencerFid = danFID
+      influencerName = "Dan"
+      break;
+    case "jesse":
+      influencerFid = jesseFID
+      influencerName = "Jesse"
+      break;
+    case "jacek":
+      influencerFid = jacekFID
+      influencerName = "Jacek"
+      break;
+  }
+
   console.log(buttonValue)
 
   let casts = await client.fetchAllCastsCreatedByUser(senderFid, {
@@ -80,14 +104,14 @@ app.frame('/response', async (c) => {
   let reacted = false
   for (let c of casts.result.casts) {
     const reactionFids = c.reactions.fids;
-    if (reactionFids.includes(cinizFID)) {
+    if (reactionFids.includes(influencerFid)) {
       reacted = true
     }
   }
 
-  let message = "🥺 Nope. Try bothering them more. 🥺"
+  let message = `🥺 Nope. Try bothering ${influencerName} more. 🥺`
   if (reacted) {
-    message = "🥳 Yup!  You must be special! 🥳"
+    message = `🥳 Yup!  ${influencerName} must like you a lot! 🥳`
   }
 
   return c.res({
