@@ -45,7 +45,7 @@ app.frame('/', (c) => {
             padding: '0 120px',
             whiteSpace: 'pre-wrap',
           }}
-        > Has @ciniz interacted with your post?
+        > Has @ciniz interacted with your posts?
         </div>
       </div>
     ),
